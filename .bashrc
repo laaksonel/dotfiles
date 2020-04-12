@@ -24,11 +24,9 @@ HISTFILESIZE=2000
 shopt -s checkwinsize
 
 # If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+# [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
@@ -57,7 +55,7 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
@@ -91,6 +89,7 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias vi='~/tools/squashfs-root/usr/bin/nvim'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -121,7 +120,8 @@ export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
 
 # Fuzzy finder options
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-alias fzfi='rg --files --hidden --follow --no-ignore-vcs -g "!{node_modules,.git}" | fzf'
-alias vifi='nvim $(fzfi)'
+alias fzfi='rg --files --hidden --follow --no-ignore-vcs -g "!{node_modules,.git,target}" 2> /dev/null | fzf'
+alias vifi='vi $(fzfi)'
 
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
+export FZF_DEFAULT_COMMAND='rg --ignore-case --files --no-ignore-vcs -g "!{node_modules,.git,target}"'
+

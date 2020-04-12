@@ -18,9 +18,10 @@ Plug 'kien/rainbow_parentheses.vim'                               " for nested p
 Plug 'tpope/vim-surround'                                         " quickly edit surroundings (brackets, html tags, etc)
 Plug 'junegunn/vim-easy-align'                                    " alignment plugin
 Plug 'neomake/neomake'                                            " run programs asynchronously and highlight errors
-Plug 'Valloric/MatchTagAlways'                                    " highlights html enclosing tags
 Plug 'terryma/vim-multiple-cursors'                               " Multiple cursors selection, etc
-Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}        " LSP client + autocompletion plugin
+Plug 'neoclide/coc.nvim', {'branch': 'release'}        " LSP client + autocompletion plugin
+"Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}        " LSP client + autocompletion plugin
+Plug 'derekwyatt/vim-scala'
 Plug 'ianks/vim-tsx'
 " Plug 'leafgarland/typescript-vim'
 " Plug 'HerringtonDarkholme/yats.vim'
@@ -54,7 +55,8 @@ call plug#end()
 "map <F5> :e! %<CR>
 
 " Register typescript extensions
-let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-yank', 'coc-prettier']
+let g:coc_global_extensions = [ 'coc-metals', 'coc-tslint-plugin', 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-yank', 'coc-prettier', 'coc-highlight']
+
 au BufNewFile,BufRead *.ts setlocal filetype=typescript
 au BufNewFile,BufRead *.tsx setlocal filetype=typescript.tsx
 
@@ -88,8 +90,10 @@ set encoding=utf-8
 " nnoremap <M-k> <C-w>k
 " nnoremap <M-l> <C-w>l
 
-" Open new tab with Ctrl+T
+" Open new tab with Ctrl+t
 nnoremap <C-t> :tabnew<CR>
+" Open new split with Ctrl+y
+nnoremap <C-y> :vsplit<CR>
 
 " Navigate between tabs
 nnoremap H gT
@@ -115,7 +119,7 @@ nnoremap <M-<> <C-w><
 nnoremap <M->> <C-w>>
 
 " Clear search highlighting
-nnoremap <C-z> :nohlsearch<CR>
+nnoremap <C-x> :nohlsearch<CR>
 
 " Terminal mode exit shortcut
 :tnoremap <Esc> <C-\><C-n>
@@ -133,7 +137,7 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Unknown"   : "?"
     \ }
 
-let NERDTreeIgnore = ['\.js\.map', 'node_modules', 'ext-libs']
+let NERDTreeIgnore = ['\.js\.map', 'node_modules', 'ext-libs', 'target']
 
 function! TrimWhitespace()
     let l:save_cursor = getpos('.')
@@ -159,21 +163,24 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-"    Nerdtree
 map <C-F> :NERDTreeToggle<CR>
 map <C-S> :NERDTreeFind<CR>
 
 " Other options
-let mapleader=','
+let mapleader='<space>'
 set backspace=2
 " colorscheme tender
-" colorscheme onedark
-colorscheme minimalist
+colorscheme onedark
+" colorscheme minimalist
 syntax on
 set t_Co=256
 set shell=/bin/bash
 set laststatus=2
 set noshowmode
+
+if (has("termguicolors"))
+  set termguicolors
+endif
 
 " Draw a line at 120 columns
 " set colorcolumn=120
@@ -188,7 +195,7 @@ let g:NERDTreeDirArrowCollapsible = '▾'
 
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeDirArrows = 1
-let g:NERDTreeWinSize=70
+let g:NERDTreeWinSize=60
 
                             " General editor options
 set hidden                  " Hide files when leaving them.
@@ -303,9 +310,9 @@ inoremap <silent><expr> <c-space> coc#refresh()
 " Coc only does snippet and additional edit on confirm.
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-" Use `[c` and `]c` for navigate diagnostics
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
+" Deprecated: Use `[c` and `]c` for navigate diagnostics
+nmap <silent> <space>r <Plug>(coc-diagnostic-prev)
+nmap <silent> <space>v <Plug>(coc-diagnostic-next)
 
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
@@ -341,11 +348,11 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
 
 " Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <space>d  :<C-u>CocList diagnostics<cr>
 " Find symbol of current document
 nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
 " Search workspace symbols
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
 nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
@@ -356,7 +363,10 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 " close preview (shown for hover / signature help)
 nnoremap <leader> <Esc> :pclose<CR>
 
-"nnoremap <silent> <M-Z> :ccl<CR>
+" Remap keys for applying codeAction to the current line.
+" nmap <space>qc  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nnoremap <space>f  <Plug>(coc-fix-current)
 
 " COC Snippets
 
@@ -376,7 +386,7 @@ let g:coc_snippet_prev = '<c-k>'
 " imap <C-j> <Plug>(coc-snippets-expand-jump)
 
 
-let g:python3_host_prog='~/venv/bin/python3.7'
+" let g:python3_host_prog='~/venv/bin/python3.7'
 
 " Silver search
 " let g:ackprg = 'ag --vimgrep'
@@ -395,14 +405,29 @@ let g:ags_agargs = {
   \ }
 
 " Search for the word under cursor
-" nnoremap <Leader>s :Ags<Space><C-R>=expand('<cword>')<CR><CR>
+nnoremap <space>s :Ags<Space><C-R>=expand('<cword>')<CR><CR>
 " Search for the visually selected text
-vnoremap <Leader>s y:Ags<Space><C-R>='"' . escape(@", '"*?()[]{}.') . '"'<CR><CR>
+vnoremap <space>vs y:Ags<Space><C-R>='"' . escape(@", '"*?()[]{}.') . '"'<CR><CR>
 " Run Ags
-nnoremap <Leader>a :Ags<Space>
+nnoremap <space>a :Ags<Space>
 " Quit Ags
 nnoremap <Leader><Leader>a :AgsQuit<CR>
 
 " Disable annoying alert sounds
 set visualbell
 set t_vb=
+
+highlight CocErrorHighlight ctermfg=Red  guifg=#ff0000
+highlight CocWarningHighlight ctermfg=Yellow  guifg=#ff0000
+highlight CocHighlightText  ctermfg=Blue  guifg=#00ff00
+highlight CocHighlightRead  ctermfg=Blue  guifg=#00ff00
+highlight CocHighlightWrite  ctermfg=Blue  guifg=#00ff00
+
+" Toggle panel with Tree Views
+nnoremap <silent> <space>t :<C-u>CocCommand metals.tvp<CR>
+" Toggle Tree View 'metalsBuild'
+nnoremap <silent> <space>tb :<C-u>CocCommand metals.tvp metalsBuild<CR>
+" Toggle Tree View 'metalsCompile'
+nnoremap <silent> <space>tc :<C-u>CocCommand metals.tvp metalsCompile<CR>
+" Reveal current current class (trait or object) in Tree View 'metalsBuild'
+nnoremap <silent> <space>tf :<C-u>CocCommand metals.revealInTreeView metalsBuild<CR>
