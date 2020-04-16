@@ -11,48 +11,29 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy finder
 Plug 'junegunn/fzf.vim'                                           " fuzzy finder
 Plug 'scrooloose/nerdtree'                                        " folders tree
 Plug 'scrooloose/nerdcommenter'                                   " code commenter
-Plug 'jacoborus/tender.vim'                                       " my favorite theme so far :)
-Plug 'erichdongubler/vim-sublime-monokai'
+" Plug 'jacoborus/tender.vim'
+" Plug 'erichdongubler/vim-sublime-monokai'
+" Plug 'dikiaap/minimalist'
 Plug 'joshdick/onedark.vim'
 Plug 'kien/rainbow_parentheses.vim'                               " for nested parentheses
 Plug 'tpope/vim-surround'                                         " quickly edit surroundings (brackets, html tags, etc)
 Plug 'junegunn/vim-easy-align'                                    " alignment plugin
 Plug 'neomake/neomake'                                            " run programs asynchronously and highlight errors
 Plug 'terryma/vim-multiple-cursors'                               " Multiple cursors selection, etc
-Plug 'neoclide/coc.nvim', {'branch': 'release'}        " LSP client + autocompletion plugin
-"Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}        " LSP client + autocompletion plugin
+Plug 'neoclide/coc.nvim', {'branch': 'release'}										" LSP client + autocompletion plugin
 Plug 'derekwyatt/vim-scala'
-Plug 'ianks/vim-tsx'
-" Plug 'leafgarland/typescript-vim'
-" Plug 'HerringtonDarkholme/yats.vim'
 Plug 'itchyny/lightline.vim'                                      " configurable status line (can be used by coc)
 Plug 'jremmen/vim-ripgrep'                                        " blazing fast search using ripgrep
 Plug 'stefandtw/quickfix-reflector.vim'                           " make modifications right in the quickfix window
 Plug 'Xuyuanp/nerdtree-git-plugin'                                " shows files git status on the NerdTree
-Plug 'gabesoft/vim-ags'
-
-"------------------------ VIM TSX ------------------------
-" by default, if you open tsx file, neovim does not show syntax colors
-" vim-tsx will do all the coloring for jsx in the .tsx file
-Plug 'ianks/vim-tsx'
-
-"------------------------ VIM TSX ------------------------
-" by default, if you open tsx file, neovim does not show syntax colors
-" typescript-vim will do all the coloring for typescript keywords
-Plug 'leafgarland/typescript-vim'
-
-"------------------------ THEME ------------------------
-Plug 'dikiaap/minimalist'
+Plug 'gabesoft/vim-ags'																						" search in files
+Plug 'ianks/vim-tsx'																							" tsx syntax coloring
+Plug 'leafgarland/typescript-vim'																	" typescript syntax coloring
 
 " Plug 'easymotion/vim-easymotion'
 " Plug 'tpope/vim-repeat'
 
 call plug#end()
-
-" End of plugins here
-" ===================
-
-"map <F5> :e! %<CR>
 
 " Register typescript extensions
 let g:coc_global_extensions = [ 'coc-metals', 'coc-tslint-plugin', 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-yank', 'coc-prettier', 'coc-highlight']
@@ -82,13 +63,6 @@ filetype plugin on
 " Better Unix support
 set viewoptions=folds,options,cursor,unix,slash
 set encoding=utf-8
-
-" Handle window actions with Meta instead of <C-w>
-" Switching
-" nnoremap <M-h> <C-w>h
-" nnoremap <M-j> <C-w>j
-" nnoremap <M-k> <C-w>k
-" nnoremap <M-l> <C-w>l
 
 " Open new tab with Ctrl+t
 nnoremap <C-t> :tabnew<CR>
@@ -167,11 +141,8 @@ map <C-F> :NERDTreeToggle<CR>
 map <C-S> :NERDTreeFind<CR>
 
 " Other options
-let mapleader='<space>'
+let mapleader=' '
 set backspace=2
-" colorscheme tender
-colorscheme onedark
-" colorscheme minimalist
 syntax on
 set t_Co=256
 set shell=/bin/bash
@@ -212,6 +183,9 @@ set listchars=tab:▸\ ,eol:¬ " Invisible characters representation when :set l
 set clipboard=unnamedplus   " Copy/Paste to/from clipboard
 set cursorline              " Highlight line cursor is currently on
 set completeopt+=noinsert   " Select the first item of popup menu automatically without inserting it
+
+
+colorscheme onedark
 
 " Search
 set incsearch  " Incremental search.
@@ -310,10 +284,6 @@ inoremap <silent><expr> <c-space> coc#refresh()
 " Coc only does snippet and additional edit on confirm.
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-" Deprecated: Use `[c` and `]c` for navigate diagnostics
-nmap <silent> <space>r <Plug>(coc-diagnostic-prev)
-nmap <silent> <space>v <Plug>(coc-diagnostic-next)
-
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
@@ -321,7 +291,7 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " Remap for do codeAction of current line
-nmap <leader>ac <Plug>(coc-codeaction)
+nnoremap <leader>qc <Plug>(coc-codeaction)
 
 " Remap for do action format
 "nmap <silent> F <Plug>(coc-action-format) "does not work
@@ -348,17 +318,18 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
 
 " Show all diagnostics
-nnoremap <silent> <space>d  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <leader>d  :<C-u>CocList diagnostics<cr>
 " Find symbol of current document
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+nnoremap <silent> <leader>o  :<C-u>CocList outline<cr>
 " Search workspace symbols
 " nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+nnoremap <silent> <leader>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+nnoremap <silent> <leader>k  :<C-u>CocPrev<CR>
+nnoremap <silent> <leader>c  :<C-u>CocCommand<CR>
 " Resume latest coc list
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+" nnoremap <silent> <leader>p  :<C-u>CocListResume<CR>
 
 " close preview (shown for hover / signature help)
 nnoremap <leader> <Esc> :pclose<CR>
@@ -366,7 +337,10 @@ nnoremap <leader> <Esc> :pclose<CR>
 " Remap keys for applying codeAction to the current line.
 " nmap <space>qc  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
-nnoremap <space>f  <Plug>(coc-fix-current)
+nmap <silent> <leader>f <Plug>(coc-fix-current)
+
+nmap <silent> <leader>p <Plug>(coc-diagnostic-prev)
+nmap <silent> <space>n <Plug>(coc-diagnostic-next)
 
 " COC Snippets
 
@@ -405,13 +379,13 @@ let g:ags_agargs = {
   \ }
 
 " Search for the word under cursor
-nnoremap <space>s :Ags<Space><C-R>=expand('<cword>')<CR><CR>
+nnoremap <leader>s :Ags<Space><C-R>=expand('<cword>')<CR><CR>
 " Search for the visually selected text
-vnoremap <space>vs y:Ags<Space><C-R>='"' . escape(@", '"*?()[]{}.') . '"'<CR><CR>
+vnoremap <leader>vs y:Ags<Space><C-R>='"' . escape(@", '"*?()[]{}.') . '"'<CR><CR>
 " Run Ags
-nnoremap <space>a :Ags<Space>
+nnoremap <leader>a :Ags<Space>
 " Quit Ags
-nnoremap <Leader><Leader>a :AgsQuit<CR>
+nnoremap <leader><leader>a :AgsQuit<CR>
 
 " Disable annoying alert sounds
 set visualbell
@@ -424,10 +398,13 @@ highlight CocHighlightRead  ctermfg=Blue  guifg=#00ff00
 highlight CocHighlightWrite  ctermfg=Blue  guifg=#00ff00
 
 " Toggle panel with Tree Views
-nnoremap <silent> <space>t :<C-u>CocCommand metals.tvp<CR>
+nnoremap <silent> <leader>t :<C-u>CocCommand metals.tvp<CR>
 " Toggle Tree View 'metalsBuild'
-nnoremap <silent> <space>tb :<C-u>CocCommand metals.tvp metalsBuild<CR>
+nnoremap <silent> <leader>tb :<C-u>CocCommand metals.tvp metalsBuild<CR>
 " Toggle Tree View 'metalsCompile'
-nnoremap <silent> <space>tc :<C-u>CocCommand metals.tvp metalsCompile<CR>
+nnoremap <silent> <leader>tc :<C-u>CocCommand metals.tvp metalsCompile<CR>
 " Reveal current current class (trait or object) in Tree View 'metalsBuild'
-nnoremap <silent> <space>tf :<C-u>CocCommand metals.revealInTreeView metalsBuild<CR>
+nnoremap <silent> <leader>tf :<C-u>CocCommand metals.revealInTreeView metalsBuild<CR>
+
+" Fast buffer switching
+nnoremap <C-r> :buffers<CR>:buffer<space>

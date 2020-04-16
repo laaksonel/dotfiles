@@ -12,5 +12,6 @@
     "typescript.tsx",
     "graphql",
 		"scala"
-  ]
+  ],
+	"metals.statusBarEnabled": true
 }
