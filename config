@@ -174,3 +174,4 @@ assign [class="discord"] $workspace3
 exec gnome-terminal
 exec brave-browser
 exec discord
+exec compton

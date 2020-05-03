@@ -408,3 +408,4 @@ nnoremap <silent> <leader>tf :<C-u>CocCommand metals.revealInTreeView metalsBuil
 
 " Fast buffer switching
 nnoremap <C-e> :buffers<CR>:buffer<space>
+

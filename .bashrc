@@ -89,7 +89,7 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
-alias vi='~/tools/squashfs-root/usr/bin/nvim'
+alias vi='vim'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -125,3 +125,4 @@ alias vifi='vi $(fzfi)'
 
 export FZF_DEFAULT_COMMAND='rg --ignore-case --files --no-ignore-vcs -g "!{node_modules,.git,target}"'
 
+set -o vi

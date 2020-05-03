@@ -27,3 +27,5 @@ if [ -d "$HOME/.local/bin" ] ; then
 fi
 
 export PSQL_EDITOR="vi"
+export EDITOR="vim"
+alias e="vim" # For tmux resurrect to launch active editors
