@@ -29,6 +29,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'                                " shows files 
 Plug 'gabesoft/vim-ags'																						" search in files
 Plug 'ianks/vim-tsx'																							" tsx syntax coloring
 Plug 'leafgarland/typescript-vim'																	" typescript syntax coloring
+Plug 'christoomey/vim-tmux-navigator'															" seamless navigation between tmux and vim
 
 " Plug 'easymotion/vim-easymotion'
 " Plug 'tpope/vim-repeat'
@@ -340,7 +341,7 @@ nnoremap <leader> <Esc> :pclose<CR>
 nmap <silent> <leader>f <Plug>(coc-fix-current)
 
 nmap <silent> <leader>p <Plug>(coc-diagnostic-prev)
-nmap <silent> <space>n <Plug>(coc-diagnostic-next)
+nmap <silent> <leader>n <Plug>(coc-diagnostic-next)
 
 " COC Snippets
 
@@ -361,9 +362,6 @@ let g:coc_snippet_prev = '<c-k>'
 
 
 " let g:python3_host_prog='~/venv/bin/python3.7'
-
-" Silver search
-" let g:ackprg = 'ag --vimgrep'
 
 let g:ags_agexe = 'rg'
 
@@ -409,3 +407,5 @@ nnoremap <silent> <leader>tf :<C-u>CocCommand metals.revealInTreeView metalsBuil
 " Fast buffer switching
 nnoremap <C-e> :buffers<CR>:buffer<space>
 
+" Copy filepath to clipboard
+nmap cp :let @" = expand("%")<cr>
