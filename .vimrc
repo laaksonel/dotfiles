@@ -1,7 +1,3 @@
-set directory=~/.vim/backup
-set backupdir=~/.vim/backup " keep swap files here
-filetype off                " required
-
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'tpope/vim-fugitive'                                         " git plugin
@@ -11,47 +7,64 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy finder
 Plug 'junegunn/fzf.vim'                                           " fuzzy finder
 Plug 'scrooloose/nerdtree'                                        " folders tree
 Plug 'scrooloose/nerdcommenter'                                   " code commenter
-" Plug 'jacoborus/tender.vim'
-" Plug 'erichdongubler/vim-sublime-monokai'
-" Plug 'dikiaap/minimalist'
-Plug 'joshdick/onedark.vim'
+Plug 'jiangmiao/auto-pairs'																				" automatically close parentheses
+Plug 'joshdick/onedark.vim'																				" color theme
+Plug 'jaredgorski/spacecamp'																			" color scheme
 Plug 'kien/rainbow_parentheses.vim'                               " for nested parentheses
 Plug 'tpope/vim-surround'                                         " quickly edit surroundings (brackets, html tags, etc)
 Plug 'junegunn/vim-easy-align'                                    " alignment plugin
 Plug 'neomake/neomake'                                            " run programs asynchronously and highlight errors
-Plug 'terryma/vim-multiple-cursors'                               " Multiple cursors selection, etc
 Plug 'neoclide/coc.nvim', {'branch': 'release'}										" LSP client + autocompletion plugin
-Plug 'derekwyatt/vim-scala'
+Plug 'sheerun/vim-polyglot'																				" language pack
+Plug 'vuciv/vim-bujo'																							" TODO list
 Plug 'itchyny/lightline.vim'                                      " configurable status line (can be used by coc)
 Plug 'jremmen/vim-ripgrep'                                        " blazing fast search using ripgrep
 Plug 'stefandtw/quickfix-reflector.vim'                           " make modifications right in the quickfix window
 Plug 'Xuyuanp/nerdtree-git-plugin'                                " shows files git status on the NerdTree
-Plug 'gabesoft/vim-ags'																						" search in files
+" Plug 'gabesoft/vim-ags'																						" search in files
+" Plug 'dyng/ctrlsf.vim'																						" search in files
 Plug 'ianks/vim-tsx'																							" tsx syntax coloring
 Plug 'leafgarland/typescript-vim'																	" typescript syntax coloring
 Plug 'christoomey/vim-tmux-navigator'															" seamless navigation between tmux and vim
-
-" Plug 'easymotion/vim-easymotion'
-" Plug 'tpope/vim-repeat'
+Plug 'ryanoasis/vim-devicons'																			" icons for files by type
+Plug 'alvan/vim-closetag'																				" Autoclose HTML tags
 
 call plug#end()
 
-" Register typescript extensions
-let g:coc_global_extensions = [ 'coc-metals', 'coc-tslint-plugin', 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-yank', 'coc-prettier', 'coc-highlight']
+let mapleader=" "
 
+" Config edit
+nnoremap <leader>rc :vsp ~/.vimrc<CR>
+nnoremap <leader><CR> :source ~/.vimrc<CR>
+
+" Register typescript extensions
+let g:coc_global_extensions = [
+	\ 'coc-metals',
+	\	'coc-tslint-plugin',
+	\	'coc-tsserver',
+	\	'coc-emmet',
+	\	'coc-css',
+	\	'coc-html',
+	\	'coc-json',
+	\	'coc-yank',
+	\	'coc-prettier',
+	\	'coc-highlight'
+	\ ]
+
+" TypeScript
 au BufNewFile,BufRead *.ts setlocal filetype=typescript
 au BufNewFile,BufRead *.tsx setlocal filetype=typescript.tsx
 
 " save when leaving insert mode
-autocmd InsertLeave * write
+" autocmd InsertLeave * write
 
+" Ripgrep
 " ripgrep smartcase (search with case insensitive)
 " let g:rg_command = 'rg --vimgrep -S -g "!{node_modules,.git,.hg,*.js.map}"'
 let g:rg_command = 'rg --vimgrep -S'
 
 " airline: status bar at the bottom
 let g:airline_powerline_fonts=1
-
 let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
 let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
@@ -74,6 +87,7 @@ nnoremap <C-y> :vsplit<CR>
 nnoremap H gT
 nnoremap L gt
 
+" Navigate splits
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
@@ -93,8 +107,8 @@ nnoremap <M--> <C-w>-
 nnoremap <M-<> <C-w><
 nnoremap <M->> <C-w>>
 
-" Clear search highlighting
-nnoremap <C-x> :nohlsearch<CR>
+" Toggle search highlighting
+nnoremap <C-x> :set hlsearch!<CR>
 
 " Terminal mode exit shortcut
 :tnoremap <Esc> <C-\><C-n>
@@ -138,13 +152,16 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-map <C-F> :NERDTreeToggle<CR>
-map <C-S> :NERDTreeFind<CR>
+map <C-f> :NERDTreeToggle<CR>
+map <C-g> :NERDTreeFind<CR>
 
 " Other options
-let mapleader=' '
 set backspace=2
+
 syntax on
+" Syntax highlighting from start of the file
+autocmd BufEnter * :syntax sync fromstart
+
 set t_Co=256
 set shell=/bin/bash
 set laststatus=2
@@ -159,7 +176,7 @@ endif
 " highlight ColorColumn ctermbg=235 guibg=#2c2d27
 
 " Fixes broken cursor on Linux
-set guicursor=
+" set guicursor=
 
 " NerdTree config
 let g:NERDTreeDirArrowExpandable = '▸'
@@ -167,12 +184,16 @@ let g:NERDTreeDirArrowCollapsible = '▾'
 
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeDirArrows = 1
-let g:NERDTreeWinSize=60
+let g:NERDTreeWinSize=50
 
-                            " General editor options
+" General editor options
+set noswapfile
+set autoindent
+set smartindent
 set hidden                  " Hide files when leaving them.
 set number                  " Show line numbers.
 set numberwidth=1           " Minimum line number column width.
+set relativenumber
 set cmdheight=2             " Number of screen lines to use for the commandline.
 set textwidth=120           " Lines length limit (0 if no limit).
 set formatoptions=jtcrq     " Sensible default line auto cutting and formatting.
@@ -184,7 +205,14 @@ set listchars=tab:▸\ ,eol:¬ " Invisible characters representation when :set l
 set clipboard=unnamedplus   " Copy/Paste to/from clipboard
 set cursorline              " Highlight line cursor is currently on
 set completeopt+=noinsert   " Select the first item of popup menu automatically without inserting it
+set noerrorbells
+set smartcase
 
+nnoremap <leader>ps :Rg<SPACE>
+nnoremap <leader>pw :Rg <C-R>=expand("<cword>")<CR><CR>
+nnoremap <leader>prw :CocSearch <C-R>=expand("<cword>")<CR><CR>
+
+" filetype off
 
 colorscheme onedark
 
@@ -323,7 +351,7 @@ nnoremap <silent> <leader>d  :<C-u>CocList diagnostics<cr>
 " Find symbol of current document
 nnoremap <silent> <leader>o  :<C-u>CocList outline<cr>
 " Search workspace symbols
-" nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
 nnoremap <silent> <leader>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
@@ -336,12 +364,13 @@ nnoremap <silent> <leader>c  :<C-u>CocCommand<CR>
 nnoremap <leader> <Esc> :pclose<CR>
 
 " Remap keys for applying codeAction to the current line.
-" nmap <space>qc  <Plug>(coc-codeaction)
+nmap <space>qc  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
 nmap <silent> <leader>f <Plug>(coc-fix-current)
 
 nmap <silent> <leader>p <Plug>(coc-diagnostic-prev)
 nmap <silent> <leader>n <Plug>(coc-diagnostic-next)
+inoremap <silent><expr> <C-space> coc#refresh()
 
 " COC Snippets
 
@@ -363,7 +392,7 @@ let g:coc_snippet_prev = '<c-k>'
 
 " let g:python3_host_prog='~/venv/bin/python3.7'
 
-let g:ags_agexe = 'rg'
+" let g:ags_agexe = 'rg'
 
 let g:ags_agargs = {
   \ '--column'         : ['', ''],
@@ -377,18 +406,30 @@ let g:ags_agargs = {
   \ }
 
 " Search for the word under cursor
-nnoremap <leader>s :Ags<Space><C-R>=expand('<cword>')<CR><CR>
+" nnoremap <leader>s :Ags<Space><C-R>=expand('<cword>')<CR><CR>
 " Search for the visually selected text
-vnoremap <leader>vs y:Ags<Space><C-R>='"' . escape(@", '"*?()[]{}.') . '"'<CR><CR>
+" vnoremap <leader>vs y:Ags<Space><C-R>='"' . escape(@", '"*?()[]{}.') . '"'<CR><CR>
 " Run Ags
-nnoremap <leader>a :Ags<Space>
+" nnoremap <leader>a :Ags<Space>
 " Quit Ags
-nnoremap <leader><leader>a :AgsQuit<CR>
+" nnoremap <leader><leader>a :AgsQuit<CR>
+
+"let g:ctrlsf_search_mode = 'async'
+
+"nmap     <C-F>f <Plug>CtrlSFPrompt
+"vmap     <C-F>f <Plug>CtrlSFVwordPath
+"vmap     <C-F>F <Plug>CtrlSFVwordExec
+"nmap     <C-F>n <Plug>CtrlSFCwordPath
+"nmap     <C-F>p <Plug>CtrlSFPwordPath
+"nnoremap <C-F>o :CtrlSFOpen<CR>
+"nnoremap <C-F>t :CtrlSFToggle<CR>
+"inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
 
 " Disable annoying alert sounds
 set visualbell
 set t_vb=
 
+" Override completition colors
 highlight CocErrorHighlight ctermfg=Red  guifg=#ff0000
 highlight CocWarningHighlight ctermfg=Yellow  guifg=#ff0000
 highlight CocHighlightText  ctermfg=Blue  guifg=#00ff00
@@ -409,3 +450,23 @@ nnoremap <C-e> :buffers<CR>:buffer<space>
 
 " Copy filepath to clipboard
 nmap cp :let @" = expand("%")<cr>
+
+" Reload vim configuration
+nnoremap <leader><CR> :source ~/.vimrc<CR>
+
+" Todo list mappings
+nmap <C-S> <Plug>BujoAddnormal
+imap <C-S> <Plug>BujoAddinsert
+nmap <C-Q> <Plug>BujoChecknormal
+imap <C-Q> <Plug>BujoCheckinsert
+
+" replace all occurences of selection
+vnoremap <leader>ra y:%s/<C-r><C-r>"//g<Left><Left>
+" find/replace in line selection
+xnoremap <leader>ra :s//g<Left><Left>
+
+" integrated terminal
+nnoremap <leader>t :bo term ++rows=10<CR>
+
+" reload file automatically
+set autoread
