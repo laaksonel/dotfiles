@@ -27,11 +27,12 @@ Plug 'ianks/vim-tsx'																							" tsx syntax coloring
 Plug 'leafgarland/typescript-vim'																	" typescript syntax coloring
 Plug 'christoomey/vim-tmux-navigator'															" seamless navigation between tmux and vim
 Plug 'ryanoasis/vim-devicons'																			" icons for files by type
-Plug 'alvan/vim-closetag'																				" Autoclose HTML tags
-Plug 'airblade/vim-gitgutter'																		" Show git diff rows
-Plug 'jreybert/vimagit'																					" Stage git diff and commit
-Plug 'nathanaelkane/vim-indent-guides'													" Indentation guides
-Plug 'easymotion/vim-easymotion'																" Fast move just like tmux finger plugin
+Plug 'alvan/vim-closetag'																					" Autoclose HTML tags
+Plug 'airblade/vim-gitgutter'																			" Show git diff rows
+Plug 'jreybert/vimagit'																						" Stage git diff and commit
+Plug 'nathanaelkane/vim-indent-guides'														" Indentation guides
+Plug 'easymotion/vim-easymotion'																	" Fast move just like tmux finger plugin
+Plug 'tpope/vim-sensible'																					" Some default settings everyone should use
 
 call plug#end()
 
