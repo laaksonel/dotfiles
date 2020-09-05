@@ -1,13 +1,13 @@
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'tpope/vim-fugitive'                                         " git plugin
+"Plug 'tpope/vim-fugitive'                                         " git plugin
 Plug 'vim-airline/vim-airline'                                    " bottom status bar
 Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy finder conf
 Plug 'junegunn/fzf.vim'                                           " fuzzy finder
 Plug 'scrooloose/nerdtree'                                        " folders tree
 Plug 'scrooloose/nerdcommenter'                                   " code commenter
-Plug 'jiangmiao/auto-pairs'																				" automatically close parentheses
+"Plug 'jiangmiao/auto-pairs'																				" automatically close parentheses
 Plug 'joshdick/onedark.vim'																				" color theme
 Plug 'jaredgorski/spacecamp'																			" color scheme
 Plug 'kien/rainbow_parentheses.vim'                               " for nested parentheses
@@ -22,12 +22,16 @@ Plug 'jremmen/vim-ripgrep'                                        " blazing fast
 Plug 'stefandtw/quickfix-reflector.vim'                           " make modifications right in the quickfix window
 Plug 'Xuyuanp/nerdtree-git-plugin'                                " shows files git status on the NerdTree
 " Plug 'gabesoft/vim-ags'																						" search in files
-" Plug 'dyng/ctrlsf.vim'																						" search in files
+Plug 'dyng/ctrlsf.vim'																						" search in files
 Plug 'ianks/vim-tsx'																							" tsx syntax coloring
 Plug 'leafgarland/typescript-vim'																	" typescript syntax coloring
 Plug 'christoomey/vim-tmux-navigator'															" seamless navigation between tmux and vim
 Plug 'ryanoasis/vim-devicons'																			" icons for files by type
 Plug 'alvan/vim-closetag'																				" Autoclose HTML tags
+Plug 'airblade/vim-gitgutter'																		" Show git diff rows
+Plug 'jreybert/vimagit'																					" Stage git diff and commit
+Plug 'nathanaelkane/vim-indent-guides'													" Indentation guides
+Plug 'easymotion/vim-easymotion'																" Fast move just like tmux finger plugin
 
 call plug#end()
 
@@ -152,7 +156,7 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-map <C-f> :NERDTreeToggle<CR>
+map <C-n> :NERDTreeToggle<CR>
 map <C-g> :NERDTreeFind<CR>
 
 " Other options
@@ -414,16 +418,17 @@ let g:ags_agargs = {
 " Quit Ags
 " nnoremap <leader><leader>a :AgsQuit<CR>
 
-"let g:ctrlsf_search_mode = 'async'
+let g:ctrlsf_search_mode = 'async'
 
-"nmap     <C-F>f <Plug>CtrlSFPrompt
+map <C-F> <Nop>
+nmap     <C-F>f <Plug>CtrlSFPrompt
 "vmap     <C-F>f <Plug>CtrlSFVwordPath
-"vmap     <C-F>F <Plug>CtrlSFVwordExec
-"nmap     <C-F>n <Plug>CtrlSFCwordPath
-"nmap     <C-F>p <Plug>CtrlSFPwordPath
-"nnoremap <C-F>o :CtrlSFOpen<CR>
-"nnoremap <C-F>t :CtrlSFToggle<CR>
-"inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
+vmap     <C-F>f <Plug>CtrlSFVwordExec
+nmap     <C-F>n <Plug>CtrlSFCwordPath
+nmap     <C-F>p <Plug>CtrlSFPwordPath
+nnoremap <C-F>o :CtrlSFOpen<CR>
+nnoremap <C-F>t :CtrlSFToggle<CR>
+inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
 
 " Disable annoying alert sounds
 set visualbell
@@ -470,3 +475,9 @@ nnoremap <leader>t :bo term ++rows=10<CR>
 
 " reload file automatically
 set autoread
+
+" Set delay of file tracking to 100ms
+set updatetime=100
+
+" Enable indenttation guides on startup
+let g:indent_guides_enable_on_vim_startup = 1
