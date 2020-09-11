@@ -8,6 +8,7 @@ Plug 'junegunn/fzf.vim'                                           " fuzzy finder
 Plug 'scrooloose/nerdtree'                                        " folders tree
 Plug 'scrooloose/nerdcommenter'                                   " code commenter
 "Plug 'jiangmiao/auto-pairs'																				" automatically close parentheses
+Plug 'sickill/vim-monokai'																				" Color theme
 Plug 'joshdick/onedark.vim'																				" color theme
 Plug 'jaredgorski/spacecamp'																			" color scheme
 Plug 'kien/rainbow_parentheses.vim'                               " for nested parentheses
@@ -220,6 +221,7 @@ nnoremap <leader>prw :CocSearch <C-R>=expand("<cword>")<CR><CR>
 " filetype off
 
 colorscheme onedark
+"colorscheme monokai
 
 " Search
 set incsearch  " Incremental search.
@@ -482,3 +484,4 @@ set updatetime=100
 
 " Enable indenttation guides on startup
 let g:indent_guides_enable_on_vim_startup = 1
+
