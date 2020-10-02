@@ -13,7 +13,7 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 8
+font pango:Fira Code Nerd Font 8
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -35,8 +35,18 @@ bindsym $mod+Return exec i3-sensible-terminal
 # kill focused window
 bindsym $mod+Shift+q kill
 
+set $bg-color 	         #2f343f
+#set $inactive-bg-color   #2f343f
+set $text-color          #f3f4f5
+#set $inactive-text-color #676E7D
+#set $urgent-bg-color     #E53935
+
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
+#bindsym $mod+d exec dmenu_run
+# bindsym $mod+d exec rofi -show drun -lines 3 -eh 2 -drun-display-format "{name}" -show-icons -icon-theme "Papirus" -hide-scrollbar true -width 30
+bindsym $mod+d exec rofi -combi-modi drun#run -show combi -lines 3 -eh 2 -drun-display-format "{name}" -show-icons -icon-theme "Papirus" -hide-scrollbar true -width 30
+bindsym $mod+Shift+d exec rofi -show window -hide-scrollbar true -show-icons -width 30
+
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -67,10 +77,16 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+g split h
+bindsym $mod+c split v
 
 # split in vertical orientation
-bindsym $mod+v split v
+bindsym $mod+v split h
+
+# Resizing
+bindsym $mod+o resize shrink width 10 px or 10 ppt
+bindsym $mod+i resize grow height 10 px or 10 ppt
+bindsym $mod+u resize shrink height 10 px or 10 ppt
+bindsym $mod+y resize grow width 10 px or 10 ppt
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -92,33 +108,33 @@ bindsym $mod+a focus parent
 # focus the child container
 #bindsym $mod+d focus child
 #
-set $workspace1 "1 Terminals"
-set $workspace2 "2 Browser"
-set $workspace3 "3 Discord"
+#set $workspace1 "1 Terminals"
+#set $workspace2 "2 Browser"
+#set $workspace3 "3 Discord"
 
 # switch to workspace
-bindsym $mod+1 workspace $workspace1
-bindsym $mod+2 workspace $workspace2
-bindsym $mod+3 workspace $workspace3
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
 bindsym $mod+4 workspace 4
 bindsym $mod+5 workspace 5
 bindsym $mod+6 workspace 6
 bindsym $mod+7 workspace 7
 bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace $workspace10
+bindsym $mod+0 workspace 10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace $workspace1
-bindsym $mod+Shift+2 move container to workspace $workspace2
-bindsym $mod+Shift+3 move container to workspace $workspace3
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
 bindsym $mod+Shift+4 move container to workspace 4
 bindsym $mod+Shift+5 move container to workspace 5
 bindsym $mod+Shift+6 move container to workspace 6
 bindsym $mod+Shift+7 move container to workspace 7
 bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
-bindsym $mod+Shift+0 move container to workspace $workspace10
+bindsym $mod+Shift+0 move container to workspace 10
 
 # move focused workspace between monitors
 bindsym $mod+Ctrl+greater move workspace to output right
@@ -168,19 +184,27 @@ bindsym $mod+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-bar {
-        status_command i3blocks -c ~/.i3/i3blocks.conf
-}
+#bar {
+#        status_command i3blocks -c ~/.i3/i3blocks.conf
+#}
 
-exec "setxkbmap -layout fi -option caps:escape"
+exec "setxkbmap -option caps:escape"
 
-bindsym $mod+shift+x exec i3lock
+bindsym $mod+shift+x exec i3lock -c 000000
+bindsym $mod+g exec chromium
+bindsym Print exec shutter -s
 
-assign [class="Gnome-terminal"] $workspace1
-assign [class="Brave-browser"] $workspace2
-assign [class="discord"] $workspace3
+#assign [class="Gnome-terminal"] $workspace1
+#assign [class="Brave-browser"] $workspace2
 
-exec gnome-terminal
-exec brave-browser
-exec discord
 exec compton
+
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
+# Wallpaper
+exec_always feh --bg-scale /home/lauri/Pictures/bg-secondary.jpg
+
+# Border Background Text
+client.focused #112526 #112526 #EE7313 #FFFFFF
+
+bindsym $mod+shift+m exec xrandr --auto
