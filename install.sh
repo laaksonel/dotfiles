@@ -69,11 +69,6 @@ sudo apt install fzf
 # Ripgrep
 sudo apt install ripgrep
 
-# Profile files
-mv ~/.profile ~/.bashrc ~/backup
-wget -P ~ https://raw.githubusercontent.com/laaksonenl/dotfiles/master/.profile
-wget -P ~ https://raw.githubusercontent.com/laaksonenl/dotfiles/master/.bashrc
-
 # i3 wallpaper
 sudo apt install feh
 cp ~/.config/polybar/wallpapers/bg-secondary.jpg ~/Pictures
@@ -116,3 +111,15 @@ sudo apt install acpi
 sudo add-apt-repository ppa:papirus/papirus
 sudo apt-get update
 sudo apt-get install papirus-icon-theme
+
+mkdir -p ~/projects
+git clone https://github.com/laaksonenl/dotfiles ~/projects
+
+cp ~/projects/dotfiles/.gtkrc-2.0 ~
+
+# Profile files
+mv ~/.profile ~/.bashrc ~/backup
+cp ~/projects/dotfiles/.profile ~
+cp ~/projects/dotfiles/.bashrc ~
+
+cp -r ~/projects/dotfiles/fonts ~/.fonts
