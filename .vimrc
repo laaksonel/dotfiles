@@ -7,7 +7,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy finder
 Plug 'junegunn/fzf.vim'                                           " fuzzy finder
 Plug 'scrooloose/nerdtree'                                        " folders tree
 Plug 'scrooloose/nerdcommenter'                                   " code commenter
-"Plug 'jiangmiao/auto-pairs'																				" automatically close parentheses
+Plug 'jiangmiao/auto-pairs'																				" automatically close parentheses
 Plug 'sickill/vim-monokai'																				" Color theme
 Plug 'joshdick/onedark.vim'																				" color theme
 Plug 'jaredgorski/spacecamp'																			" color scheme
@@ -22,18 +22,18 @@ Plug 'itchyny/lightline.vim'                                      " configurable
 Plug 'jremmen/vim-ripgrep'                                        " blazing fast search using ripgrep
 Plug 'stefandtw/quickfix-reflector.vim'                           " make modifications right in the quickfix window
 Plug 'Xuyuanp/nerdtree-git-plugin'                                " shows files git status on the NerdTree
-" Plug 'gabesoft/vim-ags'																						" search in files
+Plug 'gabesoft/vim-ags'																						" search in files
 Plug 'dyng/ctrlsf.vim'																						" search in files
 Plug 'ianks/vim-tsx'																							" tsx syntax coloring
 Plug 'leafgarland/typescript-vim'																	" typescript syntax coloring
 Plug 'christoomey/vim-tmux-navigator'															" seamless navigation between tmux and vim
-Plug 'ryanoasis/vim-devicons'																			" icons for files by type
 Plug 'alvan/vim-closetag'																					" Autoclose HTML tags
 Plug 'airblade/vim-gitgutter'																			" Show git diff rows
 Plug 'jreybert/vimagit'																						" Stage git diff and commit
 Plug 'nathanaelkane/vim-indent-guides'														" Indentation guides
 Plug 'easymotion/vim-easymotion'																	" Fast move just like tmux finger plugin
 Plug 'tpope/vim-sensible'																					" Some default settings everyone should use
+Plug 'ryanoasis/vim-devicons'																			" icons for files by type
 
 call plug#end()
 
@@ -120,7 +120,7 @@ nnoremap <C-x> :set hlsearch!<CR>
 :tnoremap <Esc> <C-\><C-n>
 
 " Nerdtree git plugin symbols
-let g:NERDTreeIndicatorMapCustom = {
+let g:NERDTreeGitStatusIndicatorMapCustom = {
     \ "Modified"  : "ᵐ",
     \ "Staged"    : "ˢ",
     \ "Untracked" : "ᵘ",
@@ -132,7 +132,7 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Unknown"   : "?"
     \ }
 
-let NERDTreeIgnore = ['\.js\.map', 'node_modules', 'ext-libs', 'target']
+let NERDTreeIgnore = ['\.js', '\.js\.map', 'node_modules', 'ext-libs', 'target']
 
 function! TrimWhitespace()
     let l:save_cursor = getpos('.')
@@ -181,9 +181,6 @@ endif
 " set colorcolumn=120
 " highlight ColorColumn ctermbg=235 guibg=#2c2d27
 
-" Fixes broken cursor on Linux
-" set guicursor=
-
 " NerdTree config
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
@@ -191,6 +188,9 @@ let g:NERDTreeDirArrowCollapsible = '▾'
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeDirArrows = 1
 let g:NERDTreeWinSize=50
+let g:NERDTreeChDirMode=2
+let g:NERDSpaceDelims=1
+"let g:NERDTreeHijackNetrw=0 " Disable autostart
 
 " General editor options
 set noswapfile
@@ -399,7 +399,7 @@ let g:coc_snippet_prev = '<c-k>'
 
 " let g:python3_host_prog='~/venv/bin/python3.7'
 
-" let g:ags_agexe = 'rg'
+let g:ags_agexe = 'rg'
 
 let g:ags_agargs = {
   \ '--column'         : ['', ''],
@@ -413,13 +413,13 @@ let g:ags_agargs = {
   \ }
 
 " Search for the word under cursor
-" nnoremap <leader>s :Ags<Space><C-R>=expand('<cword>')<CR><CR>
+" nnoremap <C-F>s :Ags<Space><C-R>=expand('<cword>')<CR><CR>
 " Search for the visually selected text
-" vnoremap <leader>vs y:Ags<Space><C-R>='"' . escape(@", '"*?()[]{}.') . '"'<CR><CR>
+vnoremap <leader>vs y:Ags<Space><C-R>='"' . escape(@", '"*?()[]{}.') . '"'<CR><CR>
 " Run Ags
-" nnoremap <leader>a :Ags<Space>
+nnoremap <leader>a :Ags<Space>
 " Quit Ags
-" nnoremap <leader><leader>a :AgsQuit<CR>
+nnoremap <leader><leader>a :AgsQuit<CR>
 
 let g:ctrlsf_search_mode = 'async'
 
@@ -457,7 +457,7 @@ nnoremap <silent> <leader>tf :<C-u>CocCommand metals.revealInTreeView metalsBuil
 nnoremap <C-e> :buffers<CR>:buffer<space>
 
 " Copy filepath to clipboard
-nmap cp :let @" = expand("%")<cr>
+nmap cp :let @+ = expand("%")<cr>
 
 " Reload vim configuration
 nnoremap <leader><CR> :source ~/.vimrc<CR>
@@ -474,7 +474,7 @@ vnoremap <leader>ra y:%s/<C-r><C-r>"//g<Left><Left>
 xnoremap <leader>ra :s//g<Left><Left>
 
 " integrated terminal
-nnoremap <leader>t :bo term ++rows=10<CR>
+"nnoremap <leader>t :bo term ++rows=10<CR>
 
 " reload file automatically
 set autoread
@@ -485,3 +485,13 @@ set updatetime=100
 " Enable indenttation guides on startup
 let g:indent_guides_enable_on_vim_startup = 1
 
+" Vertical split on the right
+set splitright
+nmap <silent> <leader>v :vnew<CR>
+
+" Ignore folders in CtrlSF search
+let g:ctrlsf_ignore_dir = ['dist', 'node_modules']
+
+com! FormatXML :%!python3 -c "import xml.dom.minidom, sys; print(xml.dom.minidom.parse(sys.stdin).toprettyxml(newl=''))"
+
+nnoremap = :FormatXML<Cr>
