@@ -202,7 +202,7 @@ exec compton
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # Wallpaper
-exec_always feh --bg-scale /home/lauri/Pictures/bg-secondary.jpg
+exec_always feh --bg-scale /home/lauri/.config/polybar/wallpapers/bg.jpg
 
 # Border Background Text
 client.focused #112526 #112526 #EE7313 #FFFFFF
