@@ -1,0 +1,26 @@
+set surround
+set clipboard+=unnamed
+set incsearch hlsearch
+set ignorecase smartcase
+set autoread
+set wildmenu
+set scrolloff=3
+set autoindent
+set noerrorbells
+set novisualbell
+set mousehide
+
+let mapleader = ' '
+
+nnoremap gd :action GotoImplementation<cr>
+nnoremap su :action ShowUsages<cr>
+nnoremap <leader>rn :action RenameElement<cr>
+nnoremap <leader>tt :action ActivateTerminalToolWindow<cr>
+nnoremap <C-o> :action Back<cr>
+nnoremap <C-i> :action Forward<cr>
+nnoremap <leader>== :action ReformatCode<cr>
+nnoremap <leader>. :action HideActiveWindow<cr>
+nnoremap <leader>s :action GotoSymbol<cr>
+nnoremap <C-p> :action GotoFile<cr>
+nnoremap <leader>v :action SplitVertically<cr>
+
