@@ -7,10 +7,10 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy finder
 Plug 'junegunn/fzf.vim'                                           " fuzzy finder
 Plug 'scrooloose/nerdtree'                                        " folders tree
 Plug 'scrooloose/nerdcommenter'                                   " code commenter
-"Plug 'jiangmiao/auto-pairs'																				" automatically close parentheses
 Plug 'sickill/vim-monokai'																				" Color theme
-Plug 'joshdick/onedark.vim'																				" color theme
-Plug 'jaredgorski/spacecamp'																			" color scheme
+Plug 'joshdick/onedark.vim'																				" Color theme
+Plug 'arzg/vim-colors-xcode'																			" Color theme
+Plug 'jaredgorski/spacecamp'																			" Color theme
 Plug 'kien/rainbow_parentheses.vim'                               " for nested parentheses
 Plug 'tpope/vim-surround'                                         " quickly edit surroundings (brackets, html tags, etc)
 Plug 'junegunn/vim-easy-align'                                    " alignment plugin
@@ -22,7 +22,6 @@ Plug 'itchyny/lightline.vim'                                      " configurable
 Plug 'jremmen/vim-ripgrep'                                        " blazing fast search using ripgrep
 Plug 'stefandtw/quickfix-reflector.vim'                           " make modifications right in the quickfix window
 Plug 'Xuyuanp/nerdtree-git-plugin'                                " shows files git status on the NerdTree
-" Plug 'gabesoft/vim-ags'																						" search in files
 Plug 'dyng/ctrlsf.vim'																						" search in files
 Plug 'ianks/vim-tsx'																							" tsx syntax coloring
 Plug 'leafgarland/typescript-vim'																	" typescript syntax coloring
@@ -34,16 +33,29 @@ Plug 'jreybert/vimagit'																						" Stage git diff and commit
 Plug 'nathanaelkane/vim-indent-guides'														" Indentation guides
 Plug 'easymotion/vim-easymotion'																	" Fast move just like tmux finger plugin
 Plug 'tpope/vim-sensible'																					" Some default settings everyone should use
+Plug 'lervag/vimtex'
+
+" Python
+Plug 'vim-syntastic/syntastic'
+Plug 'nvie/vim-flake8'
+Plug 'kh3phr3n/python-syntax'
+
 
 call plug#end()
+
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+set conceallevel=1
+let g:tex_conceal='abdmg'
 
 let mapleader=" "
 
 " Config edit
-nnoremap <leader>rc :vsp ~/.vimrc<CR>
+nnoremap <leader>rc :tabnew ~/.vimrc<CR>
 nnoremap <leader><CR> :source ~/.vimrc<CR>
 
-" Register typescript extensions
+" Registerextensions
 let g:coc_global_extensions = [
 	\ 'coc-metals',
 	\	'coc-tslint-plugin',
@@ -74,6 +86,8 @@ let g:rg_command = 'rg --vimgrep -S'
 let g:airline_powerline_fonts=1
 let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
 let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
 
 " Highlighting for jsonc filetype
 autocmd FileType json syntax match Comment +\/\/.\+$+
@@ -87,8 +101,8 @@ set encoding=utf-8
 
 " Open new tab with Ctrl+t
 nnoremap <C-t> :tabnew<CR>
-" Open new split with Ctrl+y
-nnoremap <C-y> :vsplit<CR>
+" Open new split
+nnoremap <leader>v :vnew<CR>
 
 " Navigate between tabs
 nnoremap H gT
@@ -108,11 +122,14 @@ nnoremap <M-L> <C-w>L
 nnoremap <M-x> <C-w>x
 
 " Resizing
-nnoremap <M-=> <C-w>=
-nnoremap <M-+> <C-w>+
-nnoremap <M--> <C-w>-
-nnoremap <M-<> <C-w><
-nnoremap <M->> <C-w>>
+"
+nnoremap <C-<> :vertical resize +5<CR>
+
+nnoremap ^[+ :vertical resize +5
+"nnoremap ^[+ <C-w>+
+"nnoremap ^[- <C-w>-
+"nnoremap ^[< <C-w><
+"nnoremap ^[> <C-w>>
 
 " Toggle search highlighting
 nnoremap <C-x> :set hlsearch!<CR>
@@ -121,7 +138,8 @@ nnoremap <C-x> :set hlsearch!<CR>
 :tnoremap <Esc> <C-\><C-n>
 
 " Nerdtree git plugin symbols
-let g:NERDTreeIndicatorMapCustom = {
+
+let g:NERDTreeGitStatusIndicatorMapCustom = {
     \ "Modified"  : "ᵐ",
     \ "Staged"    : "ˢ",
     \ "Untracked" : "ᵘ",
@@ -134,6 +152,27 @@ let g:NERDTreeIndicatorMapCustom = {
     \ }
 
 let NERDTreeIgnore = ['\.js\.map', 'node_modules', 'ext-libs', 'target']
+let NERDTreeShowHidden=1
+map <leader>ne :NERDTreeToggle<CR>
+map <C-g> :NERDTreeFind<CR>
+
+" Highlight currently open buffer in NERDTree
+autocmd BufEnter * call SyncTree()
+
+" sync open file with NERDTree
+" " Check if NERDTree is open or active
+function! IsNERDTreeOpen()
+  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+endfunction
+
+" Call NERDTreeFind iff NERDTree is active, current window contains a modifiable
+" file, and we're not in vimdiff
+function! SyncTree()
+  if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
+    NERDTreeFind
+    wincmd p
+  endif
+endfunction
 
 function! TrimWhitespace()
     let l:save_cursor = getpos('.')
@@ -159,9 +198,6 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-map <C-n> :NERDTreeToggle<CR>
-map <C-g> :NERDTreeFind<CR>
-
 " Other options
 set backspace=2
 
@@ -175,7 +211,7 @@ set laststatus=2
 set noshowmode
 
 if (has("termguicolors"))
-  set termguicolors
+  "set termguicolors
 endif
 
 " Draw a line at 120 columns
@@ -207,7 +243,6 @@ set formatoptions=jtcrq     " Sensible default line auto cutting and formatting.
 set linebreak               " Don't cut lines in the middle of a word .
 set showmatch               " Shows matching parenthesis.
 set matchtime=2             " Time during which the matching parenthesis is shown.
-set background=dark         " Color adapted to dark background.
 set listchars=tab:▸\ ,eol:¬ " Invisible characters representation when :set list.
 set clipboard=unnamedplus   " Copy/Paste to/from clipboard
 set cursorline              " Highlight line cursor is currently on
@@ -219,10 +254,15 @@ nnoremap <leader>ps :Rg<SPACE>
 nnoremap <leader>pw :Rg <C-R>=expand("<cword>")<CR><CR>
 nnoremap <leader>prw :CocSearch <C-R>=expand("<cword>")<CR><CR>
 
-" filetype off
+let g:onedark_color_overrides = {
+	\ "black": {"gui": "#2F343F", "cterm": "235", "cterm16": "10" },
+	\ "purple": { "gui": "#F678DF", "cterm": "125", "cterm16": "15" }
+	\}
 
 colorscheme onedark
 "colorscheme monokai
+"colorscheme xcodedarkhc
+set background=dark " Color adapted to dark background.
 
 " Search
 set incsearch  " Incremental search.
@@ -256,21 +296,22 @@ augroup END
 au BufNewFile,BufRead *.md set spell
 
 " Fuzzy finder shortcut
-nnoremap <C-p> :FZF<CR>
+"nnoremap <C-p> :FZF<CR>
+nnoremap <C-p> :Files<CR>
 
 " Disable arrow keys and page up / down
 noremap <Up> <nop>
 noremap <Down> <nop>
 noremap <Left> <nop>
-noremap <Right> <nop>
+"noremap <Right> <nop>
 inoremap <Up> <nop>
 inoremap <Down> <nop>
 inoremap <Left> <nop>
-inoremap <Right> <nop>
+"inoremap <Right> <nop>
 vnoremap <Up> <nop>
 vnoremap <Down> <nop>
 vnoremap <Left> <nop>
-vnoremap <Right> <nop>
+"vnoremap <Right> <nop>
 noremap <PageUp> <nop>
 inoremap <PageUp> <nop>
 vnoremap <PageUp> <nop>
@@ -317,6 +358,20 @@ set cmdheight=2
 " Use <c-space> for trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
+"function! s:check_back_space() abort
+"  let col = col('.') - 1
+"  return !col || getline('.')[col - 1]  =~# '\s'
+"endfunction
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+"inoremap <silent><expr> <TAB>
+"      \ pumvisible() ? "\<C-n>" :
+"      \ <SID>check_back_space() ? "\<TAB>" :
+"      \ coc#refresh()
+"inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
 " Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -340,11 +395,20 @@ autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 " Use K for show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
+"function! s:show_documentation()
+"  if &filetype == 'vim'
+"    execute 'h '.expand('<cword>')
+"  else
+"    call CocAction('doHover')
+"  endif
+"endfunction
 function! s:show_documentation()
-  if &filetype == 'vim'
+  if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
   else
-    call CocAction('doHover')
+    execute '!' . &keywordprg . " " . expand('<cword>')
   endif
 endfunction
 
@@ -372,13 +436,34 @@ nnoremap <silent> <leader>c  :<C-u>CocCommand<CR>
 nnoremap <leader> <Esc> :pclose<CR>
 
 " Remap keys for applying codeAction to the current line.
-nmap <space>qc  <Plug>(coc-codeaction)
+"nmap <space>qc  <Plug>(coc-codeaction)
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
-nmap <silent> <leader>f <Plug>(coc-fix-current)
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Apply AutoFix to problem on the current line.
+"nmap <silent> <leader>f <Plug>(coc-fix-current)
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
 
 nmap <silent> <leader>p <Plug>(coc-diagnostic-prev)
 nmap <silent> <leader>n <Plug>(coc-diagnostic-next)
 inoremap <silent><expr> <C-space> coc#refresh()
+
+" Remap <C-f> and <C-b> for scroll float windows/popups.
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><noait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
 
 " COC Snippets
 
@@ -388,6 +473,9 @@ imap <C-l> <Plug>(coc-snippets-expand)
 " Use <C-j> for select text for visual placeholder of snippet.
 vmap <C-j> <Plug>(coc-snippets-select)
 
+" Resume latest coc list.
+nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
 " Use <C-j> for jump to next placeholder, it's default of coc.nvim
 let g:coc_snippet_next = '<c-j>'
 
@@ -396,9 +484,11 @@ let g:coc_snippet_prev = '<c-k>'
 
 " Use <C-j> for both expand and jump (make expand higher priority.)
 " imap <C-j> <Plug>(coc-snippets-expand-jump)
+"
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
-
-" let g:python3_host_prog='~/venv/bin/python3.7'
+let g:python3_host_prog='/home/late/tools/anaconda3/bin/python3'
 
 " let g:ags_agexe = 'rg'
 
@@ -446,16 +536,21 @@ highlight CocHighlightRead  ctermfg=Blue  guifg=#00ff00
 highlight CocHighlightWrite  ctermfg=Blue  guifg=#00ff00
 
 " Toggle panel with Tree Views
-nnoremap <silent> <leader>t :<C-u>CocCommand metals.tvp<CR>
+"nnoremap <silent> <leader>t :<C-u>CocCommand metals.tvp<CR>
+nnoremap <silent> <C-i> :<C-u>CocCommand metals.tvp<CR>
 " Toggle Tree View 'metalsBuild'
-nnoremap <silent> <leader>tb :<C-u>CocCommand metals.tvp metalsBuild<CR>
+nnoremap <silent> <leader>b :<C-u>CocCommand metals.tvp metalsBuild<CR>
 " Toggle Tree View 'metalsCompile'
-nnoremap <silent> <leader>tc :<C-u>CocCommand metals.tvp metalsCompile<CR>
+"nnoremap <silent> <leader>c :<C-u>CocCommand metals.tvp metalsCompile<CR>
 " Reveal current current class (trait or object) in Tree View 'metalsBuild'
-nnoremap <silent> <leader>tf :<C-u>CocCommand metals.revealInTreeView metalsBuild<CR>
+nnoremap <silent> <leader>r :<C-u>CocCommand metals.revealInTreeView metalsBuild<CR>
 
 " Fast buffer switching
 nnoremap <C-e> :buffers<CR>:buffer<space>
+nnoremap <leader>bn :bnext<CR>
+nnoremap <leader>bp :bprevious<CR>
+nnoremap <leader>bf :bfirst<CR>
+nnoremap <leader>bl :blast<CR>
 
 " Copy filepath to clipboard
 nmap cp :let @" = expand("%")<cr>
@@ -480,11 +575,14 @@ nnoremap <leader>t :bo term ++rows=10<CR>
 " reload file automatically
 set autoread
 
+" scroll near top / bottom
+set scrolloff=5
+
 " Set delay of file tracking to 100ms
 set updatetime=100
 
 " Enable indenttation guides on startup
-let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_enable_on_vim_startup = 0
 
 " FZF
 nnoremap <Leader>or :History<CR>
@@ -494,3 +592,33 @@ nnoremap <Leader>ot :Lines<CR>
 nnoremap <Leader>of :Files<CR>
 " open buffers
 nnoremap <Leader>ob :Buffers<CR>
+
+" Blackhole buffers
+nmap <leader>d "_d
+"nmap <leader>c "_c
+
+autocmd! FileType fzf tnoremap <buffer> <esc> <c-c>
+
+nmap <Right> :vertical resize +5<CR>
+nmap <Left> :vertical resize -5<CR>
+
+set splitright
+
+let g:python3_host_prog = "/usr/bin/python3"
+command PrettyJson :%!python -m json.tool
+
+noremap ää :update<CR>
+
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | :vertical resize 60 | endif
+autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+noremap fm <C-w>=
+
+" Use CTRL+c to copy to system clipboard
+noremap <C-c> "+y e
+
+" Give more space for displaying messages.
+set cmdheight=2
+
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
