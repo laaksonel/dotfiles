@@ -86,7 +86,8 @@ keycode  91 = KP_Delete KP_Decimal KP_Delete KP_Decimal
 keycode  92 = ISO_Level3_Shift NoSymbol ISO_Level3_Shift
 keycode  93 =
 !keycode  94 = less greater less greater bar brokenbar bar
-keycode  94 = adiaeresis odiaeresis less greater bar brokenbar bar
+!keycode  94 = adiaeresis odiaeresis less greater bar brokenbar bar
+keycode  94 = adiaeresis odiaeresis NoSymbol NoSymbol Adiaeresis Odiaeresis  bar
 keycode  95 = F11 F11 F11 F11 F11 F11 XF86Switch_VT_11
 keycode  96 = F12 F12 F12 F12 F12 F12 XF86Switch_VT_12
 keycode  97 =
@@ -100,7 +101,10 @@ keycode 104 = KP_Enter NoSymbol KP_Enter
 keycode 105 = Control_R NoSymbol Control_R
 keycode 106 = KP_Divide KP_Divide KP_Divide KP_Divide KP_Divide KP_Divide XF86Ungrab
 keycode 107 = Print Sys_Req Print Sys_Req
+
+clear mod5
 keycode 108 = Alt_R Meta_R Alt_R Meta_R
+add mod5 = Alt_R
 keycode 109 = Linefeed NoSymbol Linefeed
 keycode 110 = Home NoSymbol Home
 keycode 111 = Up NoSymbol Up
