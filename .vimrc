@@ -255,8 +255,9 @@ nnoremap <leader>pw :Rg <C-R>=expand("<cword>")<CR><CR>
 nnoremap <leader>prw :CocSearch <C-R>=expand("<cword>")<CR><CR>
 
 let g:onedark_color_overrides = {
-	\ "black": {"gui": "#2F343F", "cterm": "235", "cterm16": "10" },
-	\ "purple": { "gui": "#F678DF", "cterm": "125", "cterm16": "15" }
+	\ "black": {"gui": "#2F343F", "cterm": "235" },
+	\ "purple": { "gui": "#F678DF", "cterm": "125" },
+	\ "blue": { "gui": "#5F87D7", "cterm": "75" }
 	\}
 
 colorscheme onedark
@@ -531,9 +532,9 @@ set t_vb=
 " Override completition colors
 highlight CocErrorHighlight ctermfg=Red  guifg=#ff0000
 highlight CocWarningHighlight ctermfg=Yellow  guifg=#ff0000
-highlight CocHighlightText  ctermfg=Blue  guifg=#00ff00
-highlight CocHighlightRead  ctermfg=Blue  guifg=#00ff00
-highlight CocHighlightWrite  ctermfg=Blue  guifg=#00ff00
+highlight CocHighlightText  ctermfg=Green  guifg=#00ff00
+highlight CocHighlightRead  ctermfg=Green  guifg=#00ff00
+highlight CocHighlightWrite  ctermfg=Green  guifg=#00ff00
 
 " Toggle panel with Tree Views
 "nnoremap <silent> <leader>t :<C-u>CocCommand metals.tvp<CR>
