@@ -52,7 +52,7 @@ let g:tex_conceal='abdmg'
 let mapleader=" "
 
 " Config edit
-nnoremap <leader>rc :tabnew ~/.vimrc<CR>
+nnoremap <leader>rc :e ~/.vimrc<CR>
 nnoremap <leader><CR> :source ~/.vimrc<CR>
 
 " Registerextensions
@@ -209,10 +209,6 @@ set t_Co=256
 set shell=/bin/bash
 set laststatus=2
 set noshowmode
-
-if (has("termguicolors"))
-  "set termguicolors
-endif
 
 " Draw a line at 120 columns
 " set colorcolumn=120
@@ -623,3 +619,6 @@ set cmdheight=2
 
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
+
+hi IndentGuidesOdd  ctermbg=black
+hi IndentGuidesEven ctermbg=darkgrey
