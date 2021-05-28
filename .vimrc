@@ -606,8 +606,9 @@ command PrettyJson :%!python -m json.tool
 
 noremap ää :update<CR>
 
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | :vertical resize 60 | endif
-autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" Auto open NerdTree
+"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | :vertical resize 60 | endif
+"autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 noremap fm <C-w>=
 
@@ -622,3 +623,4 @@ set shortmess+=c
 
 hi IndentGuidesOdd  ctermbg=black
 hi IndentGuidesEven ctermbg=darkgrey
+hi MatchParen				ctermbg=white
