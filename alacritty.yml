@@ -29,3 +29,6 @@ schemes:
      white:   '#F9F8F5'
 
 colors: *monokai
+
+env:
+  TERM: xterm-256color
