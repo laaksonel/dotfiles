@@ -32,3 +32,8 @@ lua require'nvim-treesitter.configs'.setup { highlight = { enable = true }, incr
 nnoremap <leader>gll :let g:_search_term = expand("%")<CR><bar>:Gclog -- %<CR>:call search(g:_search_term)<CR>
 nnoremap <leader>gln :cnext<CR>:call search(_search_term)<CR>
 nnoremap <leader>glp :cprev<CR>:call search(_search_term)<CR>
+
+augroup highlight_yank
+    autocmd!
+    autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank({timeout = 40})
+augroup END
